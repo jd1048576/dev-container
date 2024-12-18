@@ -1,0 +1,58 @@
+# yaml-language-server: $schema=https://json.schemastore.org/github-action.json
+name: Container
+description: Build Container Image
+
+inputs:
+  registry:
+    default: ghcr.io
+    description: Container registry address
+    required: true
+  username:
+    default: ${{ github.repository_owner }}
+    description: Username for container registry
+    required: true
+  password:
+    default: ${{ github.token }}
+    description: Password for container registry
+    required: true
+  repository:
+    default: ${{ github.repository }}
+    description: Repository name
+    required: true
+  push:
+    default: "false"
+    description: Whether to push the container image
+    required: true
+  tag:
+    default: latest
+    description: Tag
+    required: true
+
+runs:
+  using: composite
+  steps:
+    - name: Login to Container Registry
+      uses: docker/login-action@v3
+      with:
+        registry: ${{ inputs.registry }}
+        username: ${{ inputs.username }}
+        password: ${{ inputs.password }}
+
+    - name: Set up QEMU
+      uses: docker/setup-qemu-action@v3
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v3
+
+    - name: Build and Push
+      uses: docker/build-push-action@v6
+      env:
+        SOURCE_DATE_EPOCH: 0
+      with:
+        cache-from: type=registry,ref=${{ inputs.registry }}/${{ inputs.repository }}:cache
+        cache-to: ${{ inputs.push == 'true' && format('type=registry,ref={0}/{1}:cache,mode=max', inputs.registry, inputs.repository) || null }}
+        outputs: type=registry,push=${{ inputs.push }},compression=estargz,force-compression=true,oci-mediatypes=true,rewrite-timestamp=true
+        platforms: linux/amd64
+        pull: true
+        tags: |
+          ${{ inputs.registry }}/${{ inputs.repository }}:${{ inputs.tag }}

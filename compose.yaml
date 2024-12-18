@@ -1,0 +1,40 @@
+services:
+  docker:
+    image:
+      docker.io/library/docker:dind
+    environment:
+      DOCKER_TLS_CERTDIR: /certs
+    networks:
+      - docker
+    privileged: true
+    volumes:
+      - docker-certs-ca:/certs/ca
+      - docker-certs-client:/certs/client
+      - docker-lib:/var/lib/docker
+
+  vscode-server:
+    image: ghcr.io/jd1048576/dev-container:latest
+    environment:
+      DOCKER_CERT_PATH: /certs/client
+      DOCKER_HOST: tcp://docker:2376
+      DOCKER_TLS_VERIFY: 1
+    networks:
+      - docker
+    ports:
+      - 8080:8080
+    volumes:
+      - docker-certs-client:/certs/client:ro
+      - vscode-cache:/home/nonroot/.cache
+      - vscode-data:/home/nonroot/.local/share/code-server
+      - ${HOME:-${USERPROFILE}}/workspace:/home/nonroot/workspace
+      - ${HOME:-${USERPROFILE}}/.gitconfig:/home/nonroot/.gitconfig
+
+networks:
+  docker:
+
+volumes:
+  docker-certs-ca:
+  docker-certs-client:
+  docker-lib:
+  vscode-cache:
+  vscode-data:
