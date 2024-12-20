@@ -6,7 +6,7 @@ RUN --mount=type=cache,target=/var/lib/apt,sharing=locked --mount=type=tmpfs,tar
   apt-get -qq update; \
   apt-get -qqy upgrade; \
   apt-get -qqy --no-install-recommends install \
-  adduser bash bash-completion ca-certificates curl git gnupg2 locales sudo unzip; \
+  adduser bash bash-completion ca-certificates curl git gnupg2 locales sudo unzip xz-utils; \
   mkdir -p /etc/skel/.bashrc.d; \
   printf "for f in \"\${HOME}\"/.bashrc.d/*; do . \"\${f}\"; done\n" | tee -a /etc/skel/.bashrc; \
   mkdir -p /etc/skel/.local/bin; \
@@ -66,6 +66,24 @@ RUN set -eux; \
   helm completion bash | tee /etc/bash_completion.d/helm; \
   helm version --short;
 
+# renovate: datasource=node-version depName=node
+ARG NODE_VERSION="22.12.0"
+# renovate: datasource=npm depName=npm
+ARG NPM_VERSION="11.0.0"
+ARG NODE_HOME="/usr/local/lib/node"
+ENV PATH="${PATH}:${NODE_HOME}/bin"
+RUN --mount=type=cache,target=/root/.npm --mount=type=tmpfs,target=/tmp set -eux; \
+  case "${TARGETPLATFORM}" in linux/amd64) ARCH="x64";; linux/arm64) ARCH="arm64";; *) printf "Unsupported target platform [%s]\n"; exit 1;; esac; \
+  mkdir -p "${NODE_HOME}"; \
+  curl -fsSLo bundle.tar.gz "https://nodejs.org/dist/v${NODE_VERSION}/node-v${NODE_VERSION}-linux-${ARCH}.tar.xz"; \
+  tar -xf bundle.tar.gz -C "${NODE_HOME}" --strip-components 1 --no-same-owner; \
+  rm bundle.tar.gz; \
+  node --completion-bash | tee /etc/bash_completion.d/node; \
+  node --version; \
+  npm install --global "npm@${NPM_VERSION}"; \
+  npm completion | tee /etc/bash_completion.d/npm; \
+  npm --version;
+
 # renovate: datasource=git-tags depName=https://github.com/astral-sh/uv
 ARG UV_VERSION="0.5.11"
 ENV UV_LINK_MODE="copy"
@@ -79,7 +97,7 @@ RUN set -eux; \
 
 ARG PYTHON_VERSION="3.12"
 ARG PYTHON_HOME="/usr/local/lib/python"
-ENV PATH="${PATH}:/usr/local/lib/python/bin"
+ENV PATH="${PATH}:${PYTHON_HOME}/bin"
 RUN --mount=type=tmpfs,target=/tmp set -eux; \
   PYTHON_TMP_HOME="/tmp/python"; \
   uv python install "cpython@${PYTHON_VERSION}" --install-dir="${PYTHON_TMP_HOME}"; \
