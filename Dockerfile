@@ -67,7 +67,7 @@ RUN set -eux; \
   helm version --short;
 
 # renovate: datasource=git-tags depName=https://github.com/astral-sh/uv
-ARG UV_VERSION="0.5.10"
+ARG UV_VERSION="0.5.11"
 ENV UV_LINK_MODE="copy"
 RUN set -eux; \
   case "${TARGETPLATFORM}" in linux/amd64) ARCH="x86_64";; linux/arm64) ARCH="aarch64";; *) printf "Unsupported target platform [%s]\n"; exit 1;; esac; \
