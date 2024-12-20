@@ -139,7 +139,7 @@ RUN set -eux; \
 
 USER "${USER_ID}:${GROUP_ID}"
 
-ARG DIRECTORIES="/home/nonroot/.cache /home/nonroot/.local/share/code-server"
+ARG DIRECTORIES="/home/nonroot/.cache /home/nonroot/.local/share/code-server /home/nonroot/workspace"
 RUN set -eux; \
   for dir in ${DIRECTORIES}; do mkdir -p "${dir}"; done;
 

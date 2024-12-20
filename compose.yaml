@@ -26,7 +26,7 @@ services:
       - docker-certs-client:/certs/client:ro
       - vscode-cache:/home/nonroot/.cache
       - vscode-data:/home/nonroot/.local/share/code-server
-      - ${HOME:-${USERPROFILE}}/workspace:/home/nonroot/workspace
+      - vscode-workspace:/home/nonroot/workspace
       - ${HOME:-${USERPROFILE}}/.gitconfig:/home/nonroot/.gitconfig
 
 networks:
@@ -38,3 +38,4 @@ volumes:
   docker-lib:
   vscode-cache:
   vscode-data:
+  vscode-workspace:
