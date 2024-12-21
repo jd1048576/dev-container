@@ -117,7 +117,7 @@ RUN --mount=type=cache,target=/root/.cache/starship set -eux; \
   starship --version;
 
 # renovate: datasource=git-tags depName=https://github.com/coder/code-server extractVersion=v(?<version>.+)$
-ARG VSCODE_SERVER_VERSION="4.96.1"
+ARG VSCODE_SERVER_VERSION="4.96.2"
 ARG VSCODE_SERVER_HOME="/usr/local/lib/vscode-server"
 RUN --mount=type=tmpfs,target=/root/.config --mount=type=tmpfs,target=/root/.local set -eux; \
   case "${TARGETPLATFORM}" in linux/amd64) ARCH="amd64";; linux/arm64) ARCH="arm64";; *) printf "Unsupported target platform [%s]\n"; exit 1;; esac; \
