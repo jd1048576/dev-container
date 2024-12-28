@@ -66,6 +66,16 @@ RUN set -eux; \
   helm completion bash | tee /etc/bash_completion.d/helm; \
   helm version --short;
 
+# renovate: datasource=git-tags depName=https://github.com/opentofu/opentofu extractVersion=v(?<version>.+)$
+ARG TOFU_VERSION="1.8.8"
+RUN --mount=type=tmpfs,target=/root/.terraform.d set -eux; \
+  case "${TARGETPLATFORM}" in linux/amd64) ARCH="amd64";; linux/arm64) ARCH="arm64";; *) printf "Unsupported target platform [%s]\n"; exit 1;; esac; \
+  curl -fsSLo bundle.tar.gz "https://github.com/opentofu/opentofu/releases/download/v${TOFU_VERSION}/tofu_${TOFU_VERSION}_linux_${ARCH}.tar.gz"; \
+  tar -xf bundle.tar.gz -C /usr/local/bin tofu; \
+  rm bundle.tar.gz; \
+  printf "complete -C /usr/local/bin/tofu tofu\n" | tee /etc/bash_completion.d/tofu; \
+  tofu -version;
+  
 # renovate: datasource=node-version depName=node
 ARG NODE_VERSION="22.12.0"
 # renovate: datasource=npm depName=npm
