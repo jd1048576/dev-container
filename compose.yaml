@@ -7,6 +7,7 @@ services:
     networks:
       - docker
     privileged: true
+    pull_policy: always
     volumes:
       - docker-certs-ca:/certs/ca
       - docker-certs-client:/certs/client
@@ -22,6 +23,7 @@ services:
       - docker
     ports:
       - 8080:8080
+    pull_policy: always
     volumes:
       - docker-certs-client:/certs/client:ro
       - vscode-cache:/home/nonroot/.cache
