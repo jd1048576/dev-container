@@ -51,7 +51,7 @@ runs:
       with:
         cache-from: type=registry,ref=${{ inputs.registry }}/${{ inputs.repository }}:cache
         cache-to: ${{ inputs.push == 'true' && format('type=registry,ref={0}/{1}:cache,mode=max', inputs.registry, inputs.repository) || null }}
-        outputs: type=registry,push=${{ inputs.push }},compression=estargz,force-compression=true,oci-mediatypes=true,rewrite-timestamp=true
+        outputs: ${{ inputs.push == 'true' && 'type=registry,push=true,compression=estargz,force-compression=true,oci-mediatypes=true,rewrite-timestamp=true' || null }}
         platforms: linux/amd64
         pull: true
         tags: |
