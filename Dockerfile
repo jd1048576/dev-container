@@ -18,7 +18,7 @@ ENV LANG="en_GB.UTF-8"
 # renovate: datasource=git-tags depName=https://github.com/docker/cli extractVersion=v(?<version>.+)$
 ARG DOCKER_VERSION="28.0.0"
 # renovate: datasource=git-tags depName=https://github.com/docker/buildx extractVersion=v(?<version>.+)$
-ARG DOCKER_BUILDX_VERSION="0.21.0"
+ARG DOCKER_BUILDX_VERSION="0.21.1"
 # renovate: datasource=git-tags depName=https://github.com/docker/compose extractVersion=v(?<version>.+)$
 ARG DOCKER_COMPOSE_VERSION="2.33.0"
 RUN --mount=type=cache,target=/var/lib/apt,sharing=locked --mount=type=tmpfs,target=/var/log set -eux; \
