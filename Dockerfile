@@ -95,7 +95,7 @@ RUN --mount=type=cache,target=/root/.npm --mount=type=tmpfs,target=/tmp set -eux
   npm --version;
 
 # renovate: datasource=git-tags depName=https://github.com/astral-sh/uv
-ARG UV_VERSION="0.6.4"
+ARG UV_VERSION="0.6.5"
 ENV UV_LINK_MODE="copy"
 RUN set -eux; \
   case "${TARGETPLATFORM}" in linux/amd64) ARCH="x86_64";; linux/arm64) ARCH="aarch64";; *) printf "Unsupported target platform [%s]\n"; exit 1;; esac; \
