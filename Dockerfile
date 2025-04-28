@@ -115,7 +115,7 @@ RUN --mount=type=tmpfs,target=/tmp set -eux; \
   python3 --version;
 
 # renovate: datasource=git-tags depName=https://github.com/starship/starship extractVersion=v(?<version>.+)$
-ARG STARSHIP_VERSION="1.22.1"
+ARG STARSHIP_VERSION="1.23.0"
 RUN --mount=type=cache,target=/root/.cache/starship set -eux; \
   case "${TARGETPLATFORM}" in linux/amd64) ARCH="x86_64";; linux/arm64) ARCH="aarch64";; *) printf "Unsupported target platform [%s]\n"; exit 1;; esac; \
   curl -fsSLo bundle.tar.gz "https://github.com/starship/starship/releases/download/v${STARSHIP_VERSION}/starship-${ARCH}-unknown-linux-musl.tar.gz"; \
