@@ -6,7 +6,7 @@ RUN --mount=type=cache,target=/var/lib/apt,sharing=locked --mount=type=tmpfs,tar
   apt-get -qq update; \
   apt-get -qqy upgrade; \
   apt-get -qqy --no-install-recommends install \
-  adduser bash bash-completion ca-certificates curl git gnupg2 locales sudo unzip xz-utils; \
+  adduser bash bash-completion ca-certificates curl git gnupg2 locales openssh-client sudo unzip xz-utils; \
   mkdir -p /etc/skel/.bashrc.d; \
   printf "for f in \"\${HOME}\"/.bashrc.d/*; do . \"\${f}\"; done\n" | tee -a /etc/skel/.bashrc; \
   mkdir -p /etc/skel/.local/bin; \

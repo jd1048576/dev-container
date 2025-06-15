@@ -1,7 +1,6 @@
 services:
   docker:
-    image:
-      docker.io/library/docker:dind
+    image: docker.io/library/docker:dind
     environment:
       DOCKER_TLS_CERTDIR: /certs
     networks:
@@ -30,6 +29,8 @@ services:
       - vscode-data:/home/nonroot/.local/share/code-server
       - vscode-workspace:/home/nonroot/workspace
       - ${HOME:-${USERPROFILE}}/.gitconfig:/home/nonroot/.gitconfig
+      - ${HOME:-${USERPROFILE}}/.kube:/home/nonroot/.kube
+      - ${HOME:-${USERPROFILE}}/.ssh:/home/nonroot/.ssh
 
 networks:
   docker:
