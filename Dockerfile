@@ -77,7 +77,7 @@ RUN --mount=type=tmpfs,target=/root/.terraform.d set -eux; \
   tofu -version;
   
 # renovate: datasource=node-version depName=node
-ARG NODE_VERSION="22.17.1"
+ARG NODE_VERSION="22.18.0"
 # renovate: datasource=npm depName=npm
 ARG NPM_VERSION="11.5.2"
 ARG NODE_HOME="/usr/local/lib/node"
