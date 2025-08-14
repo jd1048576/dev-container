@@ -57,7 +57,7 @@ RUN --mount=type=cache,target=/var/lib/apt,sharing=locked --mount=type=tmpfs,tar
   kubectl version --client;
 
 # renovate: datasource=git-tags depName=https://github.com/helm/helm extractVersion=v(?<version>.+)$
-ARG HELM_VERSION="3.18.4"
+ARG HELM_VERSION="3.18.5"
 RUN set -eux; \
   case "${TARGETPLATFORM}" in linux/amd64) ARCH="amd64";; linux/arm64) ARCH="arm64";; *) printf "Unsupported target platform [%s]\n"; exit 1;; esac; \
   curl -fsSLo bundle.tar.gz "https://get.helm.sh/helm-v${HELM_VERSION}-linux-${ARCH}.tar.gz"; \
