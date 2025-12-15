@@ -15,7 +15,7 @@ RUN --mount=type=cache,target=/var/lib/apt,sharing=locked --mount=type=tmpfs,tar
   update-ca-certificates;
 ENV LANG="en_GB.UTF-8"
 
-# renovate: datasource=git-tags depName=https://github.com/docker/cli extractVersion=v(?<version>.+)$
+# renovate: datasource=git-tags depName=https://github.com/moby/moby extractVersion=docker-v(?<version>.+)$
 ARG DOCKER_VERSION="29.1.3"
 # renovate: datasource=git-tags depName=https://github.com/docker/buildx extractVersion=v(?<version>.+)$
 ARG DOCKER_BUILDX_VERSION="0.30.1"
@@ -135,7 +135,8 @@ RUN --mount=type=tmpfs,target=/root/.config --mount=type=tmpfs,target=/root/.loc
   curl -fsSLo bundle.tar.gz "https://github.com/coder/code-server/releases/download/v${VSCODE_SERVER_VERSION}/code-server-${VSCODE_SERVER_VERSION}-linux-${ARCH}.tar.gz"; \
   tar -xf bundle.tar.gz -C "${VSCODE_SERVER_HOME}" --strip-components 1; \
   rm bundle.tar.gz; \
-  /usr/local/lib/vscode-server/bin/code-server --version;
+  ln -s /usr/local/lib/vscode-server/bin/code-server /usr/local/bin/code; \
+  code --version;
 
 ARG USER_ID="65532"
 ARG GROUP_ID="${USER_ID}"
