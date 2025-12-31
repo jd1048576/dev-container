@@ -13,7 +13,7 @@ services:
       - docker-lib:/var/lib/docker
 
   vscode-server:
-    image: ghcr.io/jd1048576/dev-container:latest@sha256:3d9e6830daa4aac9ba0121283356ace8ca7ebe7397d65fb6da41fb6cbc69edac
+    image: ghcr.io/jd1048576/dev-container:latest
     environment:
       DOCKER_CERT_PATH: /certs/client
       DOCKER_HOST: tcp://docker:2376
