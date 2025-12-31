@@ -15,7 +15,7 @@ jobs:
       contents: read
       packages: read
     steps:
-      - uses: jd1048576/dev-container/.github/actions/container@main
+      - uses: jd1048576/dev-container/.github/actions/container@HEAD
   push:
     runs-on: ubuntu-latest
     if: ${{ github.ref == 'refs/heads/main' }}
@@ -23,6 +23,6 @@ jobs:
       contents: read
       packages: write
     steps:
-      - uses: jd1048576/dev-container/.github/actions/container@main
+      - uses: jd1048576/dev-container/.github/actions/container@HEAD
         with:
           push: "true"
