@@ -1,6 +1,6 @@
 services:
   docker:
-    image: docker.io/library/docker:dind
+    image: docker.io/library/docker:dind@sha256:173f284a4299164772a90f52b373e73e087583c0963f1334c9995f190ef6f3f5
     environment:
       DOCKER_TLS_CERTDIR: /certs
     networks:
@@ -13,7 +13,7 @@ services:
       - docker-lib:/var/lib/docker
 
   vscode-server:
-    image: ghcr.io/jd1048576/dev-container:latest
+    image: ghcr.io/jd1048576/dev-container:latest@sha256:3d9e6830daa4aac9ba0121283356ace8ca7ebe7397d65fb6da41fb6cbc69edac
     environment:
       DOCKER_CERT_PATH: /certs/client
       DOCKER_HOST: tcp://docker:2376
