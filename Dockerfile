@@ -67,7 +67,7 @@ RUN set -eux; \
   helm version --short;
 
 # renovate: datasource=git-tags depName=https://github.com/opentofu/opentofu extractVersion=v(?<version>.+)$
-ARG TOFU_VERSION="1.11.2"
+ARG TOFU_VERSION="1.11.3"
 RUN --mount=type=tmpfs,target=/root/.terraform.d set -eux; \
   case "${TARGETPLATFORM}" in linux/amd64) ARCH="amd64";; linux/arm64) ARCH="arm64";; *) printf "Unsupported target platform [%s]\n"; exit 1;; esac; \
   curl -fsSLo bundle.tar.gz "https://github.com/opentofu/opentofu/releases/download/v${TOFU_VERSION}/tofu_${TOFU_VERSION}_linux_${ARCH}.tar.gz"; \
