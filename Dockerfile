@@ -79,7 +79,7 @@ RUN --mount=type=tmpfs,target=/root/.terraform.d set -eux; \
 # renovate: datasource=node-version depName=node
 ARG NODE_VERSION="24.14.0"
 # renovate: datasource=npm depName=npm
-ARG NPM_VERSION="11.10.1"
+ARG NPM_VERSION="11.11.0"
 ARG NODE_HOME="/usr/local/lib/node"
 ENV PATH="${PATH}:${NODE_HOME}/bin"
 RUN --mount=type=cache,target=/root/.npm --mount=type=tmpfs,target=/tmp set -eux; \
