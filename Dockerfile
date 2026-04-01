@@ -15,11 +15,11 @@ RUN --mount=type=cache,target=/var/lib/apt,sharing=locked --mount=type=tmpfs,tar
   update-ca-certificates;
 ENV LANG="en_GB.UTF-8"
 
-# renovate: datasource=git-tags depName=https://github.com/moby/moby extractVersion=docker-v(?<version>.+)$
+# renovate: datasource=git-tags depName=https://github.com/moby/moby extractVersion=^docker-v(?<version>.+)$
 ARG DOCKER_VERSION="29.3.1"
-# renovate: datasource=git-tags depName=https://github.com/docker/buildx extractVersion=v(?<version>.+)$
+# renovate: datasource=git-tags depName=https://github.com/docker/buildx extractVersion=^v(?<version>.+)$
 ARG DOCKER_BUILDX_VERSION="0.33.0"
-# renovate: datasource=git-tags depName=https://github.com/docker/compose extractVersion=v(?<version>.+)$
+# renovate: datasource=git-tags depName=https://github.com/docker/compose extractVersion=^v(?<version>.+)$
 ARG DOCKER_COMPOSE_VERSION="5.1.1"
 RUN --mount=type=cache,target=/var/lib/apt,sharing=locked --mount=type=tmpfs,target=/var/log set -eux; \
   # GPG_KEY="$(curl -fsSL https://download.docker.com/linux/ubuntu/gpg | base64 -w 0)"; \
@@ -41,7 +41,7 @@ RUN --mount=type=cache,target=/var/lib/apt,sharing=locked --mount=type=tmpfs,tar
   chmod +x /usr/local/lib/docker/cli-plugins/docker-compose; \
   docker compose version;
 
-# renovate: datasource=git-tags depName=https://github.com/kubernetes/kubernetes extractVersion=v(?<version>.+)$
+# renovate: datasource=git-tags depName=https://github.com/kubernetes/kubernetes extractVersion=^v(?<version>.+)$
 ARG KUBECTL_VERSION="1.35.3"
 RUN --mount=type=cache,target=/var/lib/apt,sharing=locked --mount=type=tmpfs,target=/var/log set -eux; \
   # GPG_KEY="$(curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.32/deb/Release.key | base64 -w 0)"; \
@@ -56,7 +56,7 @@ RUN --mount=type=cache,target=/var/lib/apt,sharing=locked --mount=type=tmpfs,tar
   kubectl completion bash | tee /etc/bash_completion.d/kubectl; \
   kubectl version --client;
 
-# renovate: datasource=git-tags depName=https://github.com/helm/helm extractVersion=v(?<version>.+)$
+# renovate: datasource=git-tags depName=https://github.com/helm/helm extractVersion=^v(?<version>.+)$
 ARG HELM_VERSION="4.1.3"
 RUN set -eux; \
   case "${TARGETPLATFORM}" in linux/amd64) ARCH="amd64";; linux/arm64) ARCH="arm64";; *) printf "Unsupported target platform [%s]\n"; exit 1;; esac; \
@@ -66,7 +66,7 @@ RUN set -eux; \
   helm completion bash | tee /etc/bash_completion.d/helm; \
   helm version --short;
 
-# renovate: datasource=git-tags depName=https://github.com/opentofu/opentofu extractVersion=v(?<version>.+)$
+# renovate: datasource=git-tags depName=https://github.com/opentofu/opentofu extractVersion=^v(?<version>.+)$
 ARG TOFU_VERSION="1.11.5"
 RUN --mount=type=tmpfs,target=/root/.terraform.d set -eux; \
   case "${TARGETPLATFORM}" in linux/amd64) ARCH="amd64";; linux/arm64) ARCH="arm64";; *) printf "Unsupported target platform [%s]\n"; exit 1;; esac; \
@@ -106,15 +106,13 @@ RUN set -eux; \
   uv --version;
 
 ARG PYTHON_VERSION="3.12"
-ARG PYTHON_HOME="/usr/local/lib/python"
-ENV PATH="${PATH}:${PYTHON_HOME}/bin"
 RUN --mount=type=tmpfs,target=/tmp set -eux; \
-  PYTHON_TMP_HOME="/tmp/python"; \
-  uv python install "cpython@${PYTHON_VERSION}" --install-dir="${PYTHON_TMP_HOME}"; \
-  mv "${PYTHON_TMP_HOME}"/cpython-*/ "${PYTHON_HOME}"; \
+  uv python install "cpython@${PYTHON_VERSION}" --install-dir="/usr/local/lib" --no-bin; \
+  rm -r /usr/local/lib/.gitignore /usr/local/lib/.lock /usr/local/lib/.temp; \
+  find /usr/local/lib -path "/usr/local/lib/cpython-${PYTHON_VERSION}.*/bin/*" -xtype f -executable -exec ln -s {} /usr/local/bin \;; \
   python3 --version;
 
-# renovate: datasource=git-tags depName=https://github.com/starship/starship extractVersion=v(?<version>.+)$
+# renovate: datasource=git-tags depName=https://github.com/starship/starship extractVersion=^v(?<version>.+)$
 ARG STARSHIP_VERSION="1.24.2"
 RUN --mount=type=cache,target=/root/.cache/starship set -eux; \
   case "${TARGETPLATFORM}" in linux/amd64) ARCH="x86_64";; linux/arm64) ARCH="aarch64";; *) printf "Unsupported target platform [%s]\n"; exit 1;; esac; \
@@ -126,7 +124,7 @@ RUN --mount=type=cache,target=/root/.cache/starship set -eux; \
   printf "[container]\ndisabled = true\n\n[hostname]\ndisabled = true\n\n[username]\ndisabled = true\n" | tee /etc/skel/.config/starship.toml; \
   starship --version;
 
-# renovate: datasource=git-tags depName=https://github.com/coder/code-server extractVersion=v(?<version>.+)$
+# renovate: datasource=git-tags depName=https://github.com/coder/code-server extractVersion=^v(?<version>.+)$
 ARG VSCODE_SERVER_VERSION="4.112.0"
 ARG VSCODE_SERVER_HOME="/usr/local/lib/vscode-server"
 RUN --mount=type=tmpfs,target=/root/.config --mount=type=tmpfs,target=/root/.local set -eux; \
