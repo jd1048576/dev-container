@@ -105,7 +105,7 @@ RUN set -eux; \
   uv generate-shell-completion bash | tee /etc/bash_completion.d/uv; \
   uv --version;
 
-ARG PYTHON_VERSION="3.12"
+ARG PYTHON_VERSION="3.14"
 RUN --mount=type=tmpfs,target=/tmp set -eux; \
   uv python install "cpython@${PYTHON_VERSION}" --install-dir="/usr/local/lib" --no-bin; \
   rm -r /usr/local/lib/.gitignore /usr/local/lib/.lock /usr/local/lib/.temp; \
