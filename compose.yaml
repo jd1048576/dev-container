@@ -1,6 +1,6 @@
 services:
   docker:
-    image: docker.io/library/docker:dind@sha256:7278248384185bcbb54c7a76b2f0a7d354c4aac920605cc1ab48968d961052fb
+    image: docker.io/library/docker:dind@sha256:7bb861a04bb42bda1d237fc2cb539f9823c9b666ecfbfdbd3e534ab74c8cb976
     environment:
       DOCKER_TLS_CERTDIR: /certs
     networks:
